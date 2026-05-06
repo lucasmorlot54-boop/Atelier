@@ -1,0 +1,1718 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio · Gestion Freelance</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F8F7FA;
+  --white: #FFFFFF;
+  --gray-50: #F5F4F7;
+  --gray-100: #EEEDF2;
+  --gray-200: #E0DDE8;
+  --gray-400: #A9A4B8;
+  --gray-600: #6B6478;
+  --gray-900: #1C1826;
+  --accent: #7C6BA0;
+  --accent-light: #EEE9F8;
+  --accent-dark: #5E508A;
+  --rose: #C9A0B4;
+  --rose-light: #FAF0F6;
+  --success: #4A9B6F;
+  --success-light: #E6F4ED;
+  --warning: #E8962A;
+  --warning-light: #FEF3E2;
+  --danger: #D95454;
+  --danger-light: #FDEAEA;
+  --info: #4A87C8;
+  --info-light: #E8F1FB;
+  --shadow-sm: 0 1px 3px rgba(28,24,38,0.07);
+  --shadow: 0 4px 14px rgba(28,24,38,0.08);
+  --shadow-lg: 0 8px 28px rgba(28,24,38,0.13);
+  --radius: 10px;
+  --radius-sm: 6px;
+  --radius-lg: 16px;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  background: var(--bg);
+  color: var(--gray-900);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+.nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-200);
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 24px;
+  display: flex; align-items: center; gap: 24px; height: 58px;
+}
+.nav-logo {
+  font-size: 17px; font-weight: 800; color: var(--accent);
+  letter-spacing: -0.5px; flex-shrink: 0; cursor: pointer;
+  display: flex; align-items: center; gap: 6px; text-decoration: none;
+}
+.nav-logo-dot { color: var(--rose); font-size: 22px; line-height: 1; }
+.nav-tabs { display: flex; gap: 2px; flex: 1; }
+.nav-tab {
+  padding: 7px 15px; border: none; background: none; cursor: pointer;
+  border-radius: var(--radius-sm); font-size: 13px; font-weight: 500;
+  color: var(--gray-600); transition: all 0.15s; white-space: nowrap;
+}
+.nav-tab:hover { background: var(--gray-50); color: var(--gray-900); }
+.nav-tab.active { background: var(--accent-light); color: var(--accent); font-weight: 700; }
+.nav-settings-btn {
+  margin-left: auto; background: none; border: none; cursor: pointer;
+  color: var(--gray-400); font-size: 18px; padding: 6px; border-radius: var(--radius-sm);
+  transition: all 0.15s; flex-shrink: 0;
+}
+.nav-settings-btn:hover { background: var(--gray-100); color: var(--gray-900); }
+
+/* ── MAIN ── */
+.main { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+.section { display: none; }
+.section.active { display: block; }
+
+/* ── PAGE HEADER ── */
+.page-header {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; margin-bottom: 28px; gap: 16px;
+}
+.page-title { font-size: 21px; font-weight: 800; color: var(--gray-900); letter-spacing: -0.3px; }
+.page-subtitle { font-size: 13px; color: var(--gray-600); margin-top: 2px; }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 18px; border: none; border-radius: var(--radius-sm);
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: all 0.15s; text-decoration: none; white-space: nowrap; font-family: inherit;
+}
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: var(--accent-dark); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(124,107,160,0.35); }
+.btn-secondary { background: var(--white); color: var(--gray-900); border: 1px solid var(--gray-200); }
+.btn-secondary:hover { background: var(--gray-50); border-color: var(--gray-400); }
+.btn-success { background: var(--success); color: white; }
+.btn-success:hover { background: #3A8560; }
+.btn-danger { background: var(--danger); color: white; }
+.btn-danger:hover { background: #B83C3C; }
+.btn-ghost { background: none; color: var(--gray-600); padding: 6px 12px; }
+.btn-ghost:hover { background: var(--gray-100); color: var(--gray-900); }
+.btn-sm { padding: 5px 12px; font-size: 12px; }
+.btn-icon {
+  padding: 6px; background: none; border: none; cursor: pointer;
+  color: var(--gray-400); border-radius: var(--radius-sm);
+  transition: all 0.15s; display: inline-flex; align-items: center; font-size: 14px;
+}
+.btn-icon:hover { background: var(--gray-100); color: var(--gray-900); }
+
+/* ── STATS ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px; margin-bottom: 26px;
+}
+.stat-card {
+  background: var(--white); border: 1px solid var(--gray-200);
+  border-radius: var(--radius); padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+}
+.stat-label {
+  font-size: 11px; font-weight: 700; color: var(--gray-600);
+  text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px;
+}
+.stat-value { font-size: 24px; font-weight: 800; color: var(--gray-900); letter-spacing: -0.5px; }
+.stat-sub { font-size: 12px; color: var(--gray-600); margin-top: 4px; }
+
+/* ── TABLES ── */
+.table-wrap {
+  background: var(--white); border: 1px solid var(--gray-200);
+  border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);
+}
+table { width: 100%; border-collapse: collapse; }
+th {
+  background: var(--gray-50); padding: 10px 16px;
+  text-align: left; font-size: 11px; font-weight: 700;
+  color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--gray-200);
+}
+td {
+  padding: 12px 16px; border-bottom: 1px solid var(--gray-100);
+  font-size: 13px; color: var(--gray-900); vertical-align: middle;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--gray-50); }
+
+/* ── BADGES ── */
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 3px 9px; border-radius: 20px;
+  font-size: 11px; font-weight: 700; white-space: nowrap;
+}
+.badge-draft    { background: var(--gray-100); color: var(--gray-600); }
+.badge-sent     { background: var(--info-light); color: #2563A8; }
+.badge-accepted { background: var(--success-light); color: #276246; }
+.badge-refused  { background: var(--danger-light); color: #A83535; }
+.badge-pending  { background: var(--warning-light); color: #8A5A10; }
+.badge-progress { background: var(--info-light); color: #2563A8; }
+.badge-delivered{ background: var(--success-light); color: #276246; }
+.badge-invoiced { background: var(--accent-light); color: var(--accent-dark); }
+.badge-paid     { background: #E0F5EA; color: #1B6B3A; }
+.badge-issued   { background: var(--warning-light); color: #8A5A10; }
+.badge-overdue  { background: var(--danger-light); color: #A83535; }
+
+/* ── FORMS ── */
+.form-group { margin-bottom: 15px; }
+label {
+  display: block; font-size: 11px; font-weight: 700; color: var(--gray-600);
+  margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px;
+}
+input[type=text], input[type=email], input[type=tel], input[type=number],
+input[type=date], input[type=password], select, textarea {
+  width: 100%; padding: 9px 11px; border: 1px solid var(--gray-200);
+  border-radius: var(--radius-sm); font-size: 13px; color: var(--gray-900);
+  background: var(--white); transition: border-color 0.15s, box-shadow 0.15s;
+  font-family: inherit; outline: none; appearance: none;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(124,107,160,0.12);
+}
+select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236B6478' d='M1 1l5 5 5-5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 30px; }
+textarea { resize: vertical; min-height: 75px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+
+/* ── MODALS ── */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(28,24,38,0.45);
+  z-index: 1000; display: none; align-items: center; justify-content: center;
+  padding: 20px; backdrop-filter: blur(3px);
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--white); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg); width: 100%;
+  max-width: 620px; max-height: 92vh; overflow-y: auto;
+}
+.modal-lg { max-width: 800px; }
+.modal-header {
+  padding: 18px 24px 14px; border-bottom: 1px solid var(--gray-100);
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; background: white; z-index: 2; border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+.modal-title { font-size: 16px; font-weight: 800; color: var(--gray-900); }
+.modal-body { padding: 22px 24px; }
+.modal-footer {
+  padding: 14px 24px; border-top: 1px solid var(--gray-100);
+  display: flex; justify-content: flex-end; gap: 8px;
+  position: sticky; bottom: 0; background: white;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+/* ── FILTERS ── */
+.filter-bar { display: flex; align-items: center; gap: 6px; margin-bottom: 18px; flex-wrap: wrap; }
+.filter-btn {
+  padding: 5px 14px; border: 1px solid var(--gray-200); border-radius: 20px;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  background: white; color: var(--gray-600); transition: all 0.15s;
+}
+.filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+.filter-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+/* ── QUOTE LINES ── */
+.lines-header {
+  display: grid; grid-template-columns: 1fr 70px 110px 90px 32px;
+  gap: 8px; padding: 7px 0;
+  font-size: 10px; font-weight: 700; color: var(--gray-600);
+  text-transform: uppercase; letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--gray-200);
+}
+.quote-line {
+  display: grid; grid-template-columns: 1fr 70px 110px 90px 32px;
+  gap: 8px; align-items: center; padding: 7px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+.quote-line:last-child { border-bottom: none; }
+.line-total { font-size: 13px; font-weight: 700; color: var(--gray-900); padding: 0 2px; }
+.totals-box {
+  background: var(--gray-50); border-radius: var(--radius-sm);
+  padding: 14px 16px; margin-top: 14px;
+  border: 1px solid var(--gray-200);
+}
+.total-row {
+  display: flex; justify-content: space-between;
+  font-size: 13px; color: var(--gray-600); padding: 2px 0;
+}
+.total-row.main {
+  font-size: 16px; font-weight: 800; color: var(--gray-900);
+  border-top: 1px solid var(--gray-200); margin-top: 8px; padding-top: 10px;
+}
+
+/* ── CHARTS ── */
+.chart-wrap { position: relative; height: 210px; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+/* ── CARD ── */
+.card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+.card-header { padding: 14px 18px; border-bottom: 1px solid var(--gray-100); display: flex; align-items: center; justify-content: space-between; }
+.card-title { font-size: 13px; font-weight: 700; color: var(--gray-900); }
+.card-body { padding: 18px; }
+
+/* ── UNPAID ── */
+.unpaid-list { display: flex; flex-direction: column; gap: 9px; }
+.unpaid-item {
+  background: var(--white); border: 1px solid var(--gray-200);
+  border-radius: var(--radius); padding: 13px 16px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.unpaid-item.overdue { border-left: 3px solid var(--danger); }
+
+/* ── CLIENTS GRID ── */
+.clients-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 14px; }
+.client-card {
+  background: var(--white); border: 1px solid var(--gray-200);
+  border-radius: var(--radius); padding: 18px;
+  box-shadow: var(--shadow-sm); transition: box-shadow 0.2s, transform 0.15s; cursor: pointer;
+}
+.client-card:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
+.client-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-light), var(--rose-light));
+  color: var(--accent); display: flex; align-items: center;
+  justify-content: center; font-weight: 800; font-size: 14px; flex-shrink: 0;
+  border: 2px solid var(--accent-light);
+}
+.client-stats { display: flex; gap: 18px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--gray-100); }
+.client-stat-val { font-size: 15px; font-weight: 800; color: var(--accent); }
+.client-stat-lbl { font-size: 11px; color: var(--gray-600); }
+
+/* ── EMPTY STATE ── */
+.empty-state { text-align: center; padding: 56px 20px; color: var(--gray-600); }
+.empty-icon { font-size: 44px; margin-bottom: 14px; opacity: 0.5; }
+.empty-title { font-size: 15px; font-weight: 700; color: var(--gray-900); margin-bottom: 6px; }
+
+/* ── TOAST ── */
+.toast-wrap { position: fixed; bottom: 22px; right: 22px; z-index: 9999; display: flex; flex-direction: column; gap: 7px; }
+.toast {
+  padding: 11px 18px; border-radius: var(--radius); font-size: 13px; font-weight: 500;
+  box-shadow: var(--shadow-lg); animation: toastIn 0.2s ease;
+  max-width: 300px; backdrop-filter: blur(4px);
+}
+.toast-info    { background: var(--gray-900); color: white; }
+.toast-success { background: var(--success); color: white; }
+.toast-error   { background: var(--danger); color: white; }
+@keyframes toastIn { from { transform: translateY(16px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* ── DIVIDER ── */
+.divider { height: 1px; background: var(--gray-100); margin: 18px 0; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gray-400); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 800px) {
+  .nav-inner { padding: 0 14px; gap: 12px; }
+  .nav-tab { padding: 6px 9px; font-size: 12px; }
+  .main { padding: 18px 14px; }
+  .form-row, .form-row-3, .two-col { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  th, td { padding: 9px 10px; font-size: 12px; }
+  .lines-header, .quote-line { grid-template-columns: 1fr 56px 90px 70px 28px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <span class="nav-logo" onclick="showSection('devis')">Studio <span class="nav-logo-dot">·</span></span>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showSection('devis')">Devis &amp; Factures</button>
+      <button class="nav-tab" onclick="showSection('projets')">Projets</button>
+      <button class="nav-tab" onclick="showSection('tresorerie')">Trésorerie</button>
+      <button class="nav-tab" onclick="showSection('clients')">Clients</button>
+    </div>
+    <button class="nav-settings-btn" onclick="openSettings()" title="Paramètres">⚙️</button>
+  </div>
+</nav>
+
+<!-- TOASTS -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- ══ DEVIS & FACTURES ══ -->
+  <div class="section active" id="section-devis">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Devis &amp; Factures</div>
+        <div class="page-subtitle">Créez vos devis et convertissez-les en factures</div>
+      </div>
+      <button class="btn btn-primary" onclick="openQuoteModal()">+ Nouveau devis</button>
+    </div>
+
+    <div class="filter-bar">
+      <div id="statusFilters" style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="filter-btn active" onclick="setQuoteFilter('all',this)">Tous</button>
+        <button class="filter-btn" onclick="setQuoteFilter('draft',this)">Brouillons</button>
+        <button class="filter-btn" onclick="setQuoteFilter('sent',this)">Envoyés</button>
+        <button class="filter-btn" onclick="setQuoteFilter('accepted',this)">Acceptés</button>
+        <button class="filter-btn" onclick="setQuoteFilter('refused',this)">Refusés</button>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:6px">
+        <button class="filter-btn active" id="tabQuotes" onclick="switchTab('quotes')">Devis</button>
+        <button class="filter-btn" id="tabInvoices" onclick="switchTab('invoices')">Factures</button>
+      </div>
+    </div>
+
+    <div id="panelQuotes">
+      <div class="table-wrap">
+        <table><thead><tr>
+          <th>N°</th><th>Client</th><th>Date</th><th>Montant TTC</th><th>Statut</th><th>Actions</th>
+        </tr></thead>
+        <tbody id="tbQuotes"></tbody></table>
+      </div>
+    </div>
+
+    <div id="panelInvoices" style="display:none">
+      <div class="table-wrap">
+        <table><thead><tr>
+          <th>N°</th><th>Client</th><th>Date</th><th>Échéance</th><th>Montant TTC</th><th>Statut</th><th>Actions</th>
+        </tr></thead>
+        <tbody id="tbInvoices"></tbody></table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PROJETS ══ -->
+  <div class="section" id="section-projets">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Suivi des projets</div>
+        <div class="page-subtitle">Visualisez l'avancement de tous vos projets</div>
+      </div>
+      <button class="btn btn-primary" onclick="openProjectModal()">+ Nouveau projet</button>
+    </div>
+    <div class="filter-bar" id="projFilterBar">
+      <button class="filter-btn active" onclick="setProjFilter('all',this)">Tous</button>
+      <button class="filter-btn" onclick="setProjFilter('En attente',this)">En attente</button>
+      <button class="filter-btn" onclick="setProjFilter('En cours',this)">En cours</button>
+      <button class="filter-btn" onclick="setProjFilter('Livré',this)">Livrés</button>
+      <button class="filter-btn" onclick="setProjFilter('Facturé',this)">Facturés</button>
+      <button class="filter-btn" onclick="setProjFilter('Payé',this)">Payés</button>
+    </div>
+    <div class="table-wrap">
+      <table><thead><tr>
+        <th>Client</th><th>Projet</th><th>Statut</th><th>Montant HT</th><th>Début</th><th>Deadline</th><th>Actions</th>
+      </tr></thead>
+      <tbody id="tbProjects"></tbody></table>
+    </div>
+  </div>
+
+  <!-- ══ TRÉSORERIE ══ -->
+  <div class="section" id="section-tresorerie">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Trésorerie</div>
+        <div class="page-subtitle">Vue d'ensemble de vos finances</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <label style="text-transform:none;font-size:13px;font-weight:600;margin:0;color:var(--gray-600)">Année :</label>
+        <select id="yearPicker" style="width:90px" onchange="renderTreasury()"></select>
+      </div>
+    </div>
+    <div class="stats-grid" id="treasuryStats"></div>
+    <div class="two-col" style="margin-bottom:20px">
+      <div class="card">
+        <div class="card-header"><span class="card-title">Revenus — 6 derniers mois</span></div>
+        <div class="card-body"><div class="chart-wrap"><canvas id="chartRevenue"></canvas></div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">Encaissé vs. En attente</span></div>
+        <div class="card-body"><div class="chart-wrap"><canvas id="chartStatus"></canvas></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Factures impayées</span>
+        <span id="unpaidBadge" style="font-size:12px;color:var(--danger);font-weight:700"></span>
+      </div>
+      <div class="card-body"><div class="unpaid-list" id="unpaidList"></div></div>
+    </div>
+  </div>
+
+  <!-- ══ CLIENTS ══ -->
+  <div class="section" id="section-clients">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Clients</div>
+        <div class="page-subtitle">Gérez vos fiches clients</div>
+      </div>
+      <button class="btn btn-primary" onclick="openClientModal()">+ Nouveau client</button>
+    </div>
+    <div class="clients-grid" id="clientsGrid"></div>
+  </div>
+
+</div><!-- /main -->
+
+
+<!-- ══════════════════════ MODALS ══════════════════════ -->
+
+<!-- QUOTE MODAL -->
+<div class="modal-overlay" id="modalQuote">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <span class="modal-title" id="quoteMTitle">Nouveau devis</span>
+      <button class="btn-icon" onclick="closeModal('modalQuote')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="qId">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Client</label>
+          <select id="qClient" onchange="autofillEmail()">
+            <option value="">— Sélectionner un client —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Email client</label>
+          <input type="email" id="qEmail" placeholder="client@email.fr">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Objet</label>
+        <input type="text" id="qDesc" placeholder="Ex : Identité visuelle complète">
+      </div>
+      <div class="divider"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <span style="font-size:13px;font-weight:700;color:var(--gray-900)">Prestations</span>
+        <button class="btn btn-secondary btn-sm" onclick="addLine()">+ Ajouter une ligne</button>
+      </div>
+      <div class="lines-header">
+        <span>Description</span><span>Qté</span><span>Prix unit. HT</span><span>Total HT</span><span></span>
+      </div>
+      <div id="linesContainer"></div>
+      <div class="totals-box">
+        <div class="total-row"><span>Total HT</span><span id="totHT">0,00 €</span></div>
+        <div class="total-row"><span>TVA (20 %)</span><span id="totTVA">0,00 €</span></div>
+        <div class="total-row main"><span>Total TTC</span><span id="totTTC">0,00 €</span></div>
+      </div>
+      <div class="divider"></div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Statut</label>
+          <select id="qStatus">
+            <option value="draft">Brouillon</option>
+            <option value="sent">Envoyé</option>
+            <option value="accepted">Accepté</option>
+            <option value="refused">Refusé</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Notes / conditions particulières</label>
+          <input type="text" id="qNotes" placeholder="Acompte 30 %, délai 3 semaines…">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modalQuote')">Annuler</button>
+      <button class="btn btn-secondary" onclick="saveQuote(true)">Enregistrer</button>
+      <button class="btn btn-primary" onclick="saveQuote(false)">Enregistrer &amp; PDF</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONVERT TO INVOICE MODAL -->
+<div class="modal-overlay" id="modalConvert">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Convertir en facture</span>
+      <button class="btn-icon" onclick="closeModal('modalConvert')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--gray-600);margin-bottom:18px">
+        Une facture sera créée avec les mêmes informations que ce devis.
+      </p>
+      <input type="hidden" id="convertQuoteId">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date d'émission</label>
+          <input type="date" id="invDate">
+        </div>
+        <div class="form-group">
+          <label>Date d'échéance</label>
+          <input type="date" id="invDue">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modalConvert')">Annuler</button>
+      <button class="btn btn-primary" onclick="doConvert()">Créer la facture &amp; PDF</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECT MODAL -->
+<div class="modal-overlay" id="modalProject">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="projMTitle">Nouveau projet</span>
+      <button class="btn-icon" onclick="closeModal('modalProject')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="pId">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Client</label>
+          <select id="pClient"><option value="">— Sélectionner —</option></select>
+        </div>
+        <div class="form-group">
+          <label>Nom du projet</label>
+          <input type="text" id="pName" placeholder="Ex : Refonte identité visuelle">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Statut</label>
+          <select id="pStatus">
+            <option>En attente</option><option>En cours</option>
+            <option>Livré</option><option>Facturé</option><option>Payé</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Montant HT (€)</label>
+          <input type="number" id="pAmount" placeholder="0" min="0" step="0.01">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date de début</label>
+          <input type="date" id="pStart">
+        </div>
+        <div class="form-group">
+          <label>Deadline</label>
+          <input type="date" id="pDeadline">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="pDesc" placeholder="Détails du projet…"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modalProject')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveProject()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- CLIENT MODAL -->
+<div class="modal-overlay" id="modalClient">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="clientMTitle">Nouveau client</span>
+      <button class="btn-icon" onclick="closeModal('modalClient')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="cId">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nom / Prénom</label>
+          <input type="text" id="cName" placeholder="Marie Dupont">
+        </div>
+        <div class="form-group">
+          <label>Société</label>
+          <input type="text" id="cCompany" placeholder="Agence Design Co.">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="cEmail" placeholder="marie@design.fr">
+        </div>
+        <div class="form-group">
+          <label>Téléphone</label>
+          <input type="tel" id="cPhone" placeholder="06 12 34 56 78">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Adresse</label>
+        <input type="text" id="cAddress" placeholder="12 rue de la Paix, 75001 Paris">
+      </div>
+      <div class="form-group">
+        <label>Notes</label>
+        <textarea id="cNotes" placeholder="Infos utiles, préférences, contexte…"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modalClient')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveClient()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- CLIENT DETAIL MODAL -->
+<div class="modal-overlay" id="modalClientDetail">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <span class="modal-title" id="clientDetailTitle">Fiche client</span>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn btn-secondary btn-sm" id="btnEditClient">Modifier</button>
+        <button class="btn-icon" onclick="closeModal('modalClientDetail')">✕</button>
+      </div>
+    </div>
+    <div class="modal-body" id="clientDetailBody"></div>
+  </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-overlay" id="modalSettings">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Mes informations professionnelles</span>
+      <button class="btn-icon" onclick="closeModal('modalSettings')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--gray-600);margin-bottom:18px">
+        Ces informations apparaissent sur vos devis et factures PDF.
+      </p>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Votre nom / raison sociale</label>
+          <input type="text" id="sName" placeholder="Marie Dupont Design">
+        </div>
+        <div class="form-group">
+          <label>SIRET</label>
+          <input type="text" id="sSiret" placeholder="000 000 000 00000">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Adresse complète</label>
+        <input type="text" id="sAddress" placeholder="12 rue de la Paix, 75001 Paris">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email professionnel</label>
+          <input type="email" id="sEmail" placeholder="vous@email.fr">
+        </div>
+        <div class="form-group">
+          <label>Téléphone</label>
+          <input type="tel" id="sPhone" placeholder="06 00 00 00 00">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Taux journalier par défaut (€)</label>
+        <input type="number" id="sRate" placeholder="380" min="0" step="10">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modalSettings')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveSettings()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════ SCRIPTS ══════════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+'use strict';
+
+// ═══════════════════════════════════════════
+// DATA LAYER
+// ═══════════════════════════════════════════
+const KEY = 'studio_';
+const DB = {
+  get: k => JSON.parse(localStorage.getItem(KEY + k) || '[]'),
+  set: (k, v) => localStorage.setItem(KEY + k, JSON.stringify(v)),
+  clients:  () => DB.get('clients'),
+  quotes:   () => DB.get('quotes'),
+  invoices: () => DB.get('invoices'),
+  projects: () => DB.get('projects'),
+  settings: () => JSON.parse(localStorage.getItem(KEY + 'settings') || JSON.stringify({
+    name: '', siret: '', address: '', email: '', phone: '',
+    defaultRate: 380, nextQ: 1, nextF: 1
+  })),
+  saveClients:  d => DB.set('clients', d),
+  saveQuotes:   d => DB.set('quotes', d),
+  saveInvoices: d => DB.set('invoices', d),
+  saveProjects: d => DB.set('projects', d),
+  saveSettings: d => localStorage.setItem(KEY + 'settings', JSON.stringify(d)),
+};
+
+// ═══════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+const today = () => new Date().toISOString().slice(0, 10);
+const addDays = (d, n) => { const dt = new Date(d); dt.setDate(dt.getDate() + n); return dt.toISOString().slice(0, 10); };
+const fmtMoney = n => Number(n || 0).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+const fmtDate = d => d ? new Date(d + 'T12:00:00').toLocaleDateString('fr-FR') : '—';
+const MONTHS = ['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Aoû','Sep','Oct','Nov','Déc'];
+const calcHT  = lines => (lines || []).reduce((s, l) => s + (l.qty || 0) * (l.price || 0), 0);
+const calcTTC = lines => calcHT(lines) * 1.2;
+
+function toast(msg, type = 'info') {
+  const el = document.createElement('div');
+  el.className = `toast toast-${type}`;
+  el.textContent = msg;
+  document.getElementById('toastWrap').appendChild(el);
+  setTimeout(() => el.remove(), 3000);
+}
+
+// ═══════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════
+let activeSec = 'devis';
+const SECTIONS = ['devis', 'projets', 'tresorerie', 'clients'];
+
+function showSection(name) {
+  activeSec = name;
+  SECTIONS.forEach((s, i) => {
+    document.getElementById('section-' + s).classList.toggle('active', s === name);
+    document.querySelectorAll('.nav-tab')[i].classList.toggle('active', s === name);
+  });
+  if (name === 'devis')      renderQuotes();
+  if (name === 'projets')    renderProjects();
+  if (name === 'tresorerie') renderTreasury();
+  if (name === 'clients')    renderClients();
+}
+
+// ═══════════════════════════════════════════
+// MODALS
+// ═══════════════════════════════════════════
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) closeModal(o.id); });
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => closeModal(m.id));
+});
+
+// ═══════════════════════════════════════════
+// SETTINGS
+// ═══════════════════════════════════════════
+function openSettings() {
+  const s = DB.settings();
+  document.getElementById('sName').value    = s.name    || '';
+  document.getElementById('sSiret').value   = s.siret   || '';
+  document.getElementById('sAddress').value = s.address || '';
+  document.getElementById('sEmail').value   = s.email   || '';
+  document.getElementById('sPhone').value   = s.phone   || '';
+  document.getElementById('sRate').value    = s.defaultRate || 380;
+  openModal('modalSettings');
+}
+function saveSettings() {
+  const s = DB.settings();
+  s.name        = document.getElementById('sName').value.trim();
+  s.siret       = document.getElementById('sSiret').value.trim();
+  s.address     = document.getElementById('sAddress').value.trim();
+  s.email       = document.getElementById('sEmail').value.trim();
+  s.phone       = document.getElementById('sPhone').value.trim();
+  s.defaultRate = parseFloat(document.getElementById('sRate').value) || 380;
+  DB.saveSettings(s);
+  closeModal('modalSettings');
+  toast('Paramètres enregistrés', 'success');
+}
+
+// ═══════════════════════════════════════════
+// CLIENTS
+// ═══════════════════════════════════════════
+function openClientModal(id = null) {
+  ['cId','cName','cCompany','cEmail','cPhone','cAddress','cNotes'].forEach(f => document.getElementById(f).value = '');
+  document.getElementById('clientMTitle').textContent = id ? 'Modifier le client' : 'Nouveau client';
+  if (id) {
+    const c = DB.clients().find(x => x.id === id);
+    if (!c) return;
+    document.getElementById('cId').value      = c.id;
+    document.getElementById('cName').value    = c.name    || '';
+    document.getElementById('cCompany').value = c.company || '';
+    document.getElementById('cEmail').value   = c.email   || '';
+    document.getElementById('cPhone').value   = c.phone   || '';
+    document.getElementById('cAddress').value = c.address || '';
+    document.getElementById('cNotes').value   = c.notes   || '';
+  }
+  openModal('modalClient');
+}
+
+function saveClient() {
+  const name = document.getElementById('cName').value.trim();
+  if (!name) { toast('Le nom est obligatoire', 'error'); return; }
+  const list = DB.clients();
+  const id   = document.getElementById('cId').value;
+  const obj  = {
+    id: id || uid(),
+    name, company: document.getElementById('cCompany').value.trim(),
+    email: document.getElementById('cEmail').value.trim(),
+    phone: document.getElementById('cPhone').value.trim(),
+    address: document.getElementById('cAddress').value.trim(),
+    notes: document.getElementById('cNotes').value.trim(),
+    createdAt: id ? (list.find(c => c.id === id)?.createdAt || today()) : today(),
+  };
+  if (id) list[list.findIndex(c => c.id === id)] = obj;
+  else list.push(obj);
+  DB.saveClients(list);
+  closeModal('modalClient');
+  toast('Client enregistré', 'success');
+  renderClients();
+  refreshSelects();
+}
+
+function deleteClient(id) {
+  if (!confirm('Supprimer ce client ?')) return;
+  DB.saveClients(DB.clients().filter(c => c.id !== id));
+  toast('Client supprimé');
+  renderClients();
+  refreshSelects();
+}
+
+let _activeClientId = null;
+function openClientDetail(id) {
+  _activeClientId = id;
+  const c = DB.clients().find(x => x.id === id);
+  if (!c) return;
+  document.getElementById('clientDetailTitle').textContent = c.name + (c.company ? ' — ' + c.company : '');
+  document.getElementById('btnEditClient').onclick = () => { closeModal('modalClientDetail'); openClientModal(id); };
+
+  const projs = DB.projects().filter(p => p.clientId === id);
+  const invs  = DB.invoices().filter(i => i.clientId === id);
+  const caTotal = invs.filter(i => i.status === 'paid').reduce((s, i) => s + calcTTC(i.lines), 0);
+  const caFact  = invs.reduce((s, i) => s + calcTTC(i.lines), 0);
+
+  document.getElementById('clientDetailBody').innerHTML = `
+    <div class="form-row" style="margin-bottom:20px">
+      <div>
+        <div class="stat-label" style="margin-bottom:6px">Contact</div>
+        ${c.email   ? `<div style="font-size:13px;margin-bottom:3px">📧 ${c.email}</div>`   : ''}
+        ${c.phone   ? `<div style="font-size:13px;margin-bottom:3px">📞 ${c.phone}</div>`   : ''}
+        ${c.address ? `<div style="font-size:13px;color:var(--gray-600)">${c.address}</div>` : ''}
+        ${!c.email && !c.phone && !c.address ? '<div style="font-size:13px;color:var(--gray-600)">Aucun contact renseigné</div>' : ''}
+      </div>
+      <div>
+        <div class="stat-label" style="margin-bottom:6px">Chiffres clés</div>
+        <div style="font-size:22px;font-weight:800;color:var(--accent)">${fmtMoney(caTotal)}</div>
+        <div style="font-size:12px;color:var(--gray-600)">CA encaissé · ${fmtMoney(caFact)} facturé</div>
+      </div>
+    </div>
+    ${c.notes ? `<div style="background:var(--gray-50);border-radius:var(--radius-sm);padding:12px;font-size:13px;color:var(--gray-600);margin-bottom:20px;border:1px solid var(--gray-200)">${c.notes}</div>` : ''}
+    <div style="font-size:14px;font-weight:700;margin-bottom:10px">Projets (${projs.length})</div>
+    ${projs.length ? `<div class="table-wrap"><table><thead><tr><th>Projet</th><th>Statut</th><th>Montant HT</th><th>Deadline</th></tr></thead><tbody>
+      ${projs.map(p => `<tr><td style="font-weight:600">${p.name}</td><td>${projBadge(p.status)}</td><td>${fmtMoney(p.amountHT)}</td><td>${fmtDate(p.deadline)}</td></tr>`).join('')}
+    </tbody></table></div>` : '<p style="font-size:13px;color:var(--gray-600)">Aucun projet.</p>'}
+    <div style="font-size:14px;font-weight:700;margin:20px 0 10px">Factures (${invs.length})</div>
+    ${invs.length ? `<div class="table-wrap"><table><thead><tr><th>N°</th><th>Date</th><th>Montant TTC</th><th>Statut</th></tr></thead><tbody>
+      ${invs.map(i => `<tr><td style="font-weight:600;color:var(--accent)">${i.number}</td><td>${fmtDate(i.createdAt)}</td><td style="font-weight:600">${fmtMoney(calcTTC(i.lines))}</td><td>${invBadge(i)}</td></tr>`).join('')}
+    </tbody></table></div>` : '<p style="font-size:13px;color:var(--gray-600)">Aucune facture.</p>'}
+  `;
+  openModal('modalClientDetail');
+}
+
+function renderClients() {
+  const list = DB.clients();
+  const grid = document.getElementById('clientsGrid');
+  if (!list.length) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
+      <div class="empty-icon">👤</div>
+      <div class="empty-title">Aucun client pour l'instant</div>
+      <div>Ajoutez votre premier client pour commencer.</div>
+    </div>`;
+    return;
+  }
+  grid.innerHTML = list.map(c => {
+    const projs = DB.projects().filter(p => p.clientId === c.id).length;
+    const invs  = DB.invoices().filter(i => i.clientId === c.id);
+    const ca    = invs.filter(i => i.status === 'paid').reduce((s, i) => s + calcTTC(i.lines), 0);
+    const init  = c.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    return `
+      <div class="client-card" onclick="openClientDetail('${c.id}')">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:11px">
+            <div class="client-avatar">${init}</div>
+            <div>
+              <div style="font-size:14px;font-weight:700">${c.name}</div>
+              <div style="font-size:12px;color:var(--gray-600)">${c.company || 'Particulier'}</div>
+            </div>
+          </div>
+          <div onclick="event.stopPropagation()" style="display:flex;gap:2px">
+            <button class="btn-icon" onclick="openClientModal('${c.id}')" title="Modifier">✏️</button>
+            <button class="btn-icon" onclick="deleteClient('${c.id}')" title="Supprimer">🗑️</button>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--gray-600);display:flex;flex-direction:column;gap:3px">
+          ${c.email ? `<span>📧 ${c.email}</span>` : ''}
+          ${c.phone ? `<span>📞 ${c.phone}</span>` : ''}
+        </div>
+        <div class="client-stats">
+          <div><div class="client-stat-val">${fmtMoney(ca)}</div><div class="client-stat-lbl">CA encaissé</div></div>
+          <div><div class="client-stat-val">${projs}</div><div class="client-stat-lbl">Projets</div></div>
+          <div><div class="client-stat-val">${invs.length}</div><div class="client-stat-lbl">Factures</div></div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function refreshSelects() {
+  const opts = DB.clients().map(c => `<option value="${c.id}">${c.name}${c.company ? ' – ' + c.company : ''}</option>`).join('');
+  ['qClient', 'pClient'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const prev = el.value;
+    el.innerHTML = `<option value="">— Sélectionner —</option>` + opts;
+    if (prev) el.value = prev;
+  });
+}
+
+function autofillEmail() {
+  const cid = document.getElementById('qClient').value;
+  if (!cid) return;
+  const c = DB.clients().find(x => x.id === cid);
+  if (c?.email) document.getElementById('qEmail').value = c.email;
+}
+
+// ═══════════════════════════════════════════
+// QUOTES
+// ═══════════════════════════════════════════
+let _lines = [];
+let _qFilter = 'all';
+let _activeTab = 'quotes';
+
+function addLine(desc = '', qty = 1, price = null) {
+  const s = DB.settings();
+  _lines.push({ id: uid(), desc, qty, price: price !== null ? price : s.defaultRate });
+  renderLines();
+}
+
+function removeLine(id) {
+  _lines = _lines.filter(l => l.id !== id);
+  renderLines();
+}
+
+function updateLine(id, field, val) {
+  const l = _lines.find(x => x.id === id);
+  if (!l) return;
+  l[field] = field === 'desc' ? val : (parseFloat(val) || 0);
+  renderLines();
+}
+
+function renderLines() {
+  const box = document.getElementById('linesContainer');
+  box.innerHTML = _lines.map(l => `
+    <div class="quote-line">
+      <input type="text" value="${l.desc}" placeholder="Description"
+        onchange="updateLine('${l.id}','desc',this.value)">
+      <input type="number" value="${l.qty}" min="0.5" step="0.5"
+        onchange="updateLine('${l.id}','qty',this.value)">
+      <input type="number" value="${l.price}" min="0" step="0.01"
+        onchange="updateLine('${l.id}','price',this.value)">
+      <div class="line-total">${fmtMoney(l.qty * l.price)}</div>
+      <button class="btn-icon" onclick="removeLine('${l.id}')">✕</button>
+    </div>`).join('');
+  updateTotals();
+}
+
+function updateTotals() {
+  const ht  = calcHT(_lines);
+  const tva = ht * 0.2;
+  document.getElementById('totHT').textContent  = fmtMoney(ht);
+  document.getElementById('totTVA').textContent = fmtMoney(tva);
+  document.getElementById('totTTC').textContent = fmtMoney(ht + tva);
+}
+
+function openQuoteModal(id = null) {
+  refreshSelects();
+  _lines = [];
+  ['qId','qDesc','qNotes'].forEach(f => document.getElementById(f).value = '');
+  document.getElementById('qClient').value = '';
+  document.getElementById('qEmail').value  = '';
+  document.getElementById('qStatus').value = 'draft';
+  document.getElementById('quoteMTitle').textContent = id ? 'Modifier le devis' : 'Nouveau devis';
+
+  if (id) {
+    const q = DB.quotes().find(x => x.id === id);
+    if (q) {
+      document.getElementById('qId').value     = q.id;
+      document.getElementById('qClient').value = q.clientId  || '';
+      document.getElementById('qEmail').value  = q.clientEmail || '';
+      document.getElementById('qDesc').value   = q.desc  || '';
+      document.getElementById('qStatus').value = q.status || 'draft';
+      document.getElementById('qNotes').value  = q.notes || '';
+      _lines = JSON.parse(JSON.stringify(q.lines || []));
+    }
+  } else {
+    addLine('', 1, DB.settings().defaultRate);
+  }
+  renderLines();
+  openModal('modalQuote');
+}
+
+function saveQuote(draftOnly = false) {
+  const cid = document.getElementById('qClient').value;
+  const email = document.getElementById('qEmail').value.trim();
+  const client = DB.clients().find(c => c.id === cid);
+
+  if (!cid && !email) { toast('Veuillez sélectionner un client', 'error'); return null; }
+  if (!_lines.length)  { toast('Ajoutez au moins une prestation', 'error'); return null; }
+
+  const quotes = DB.quotes();
+  const existId = document.getElementById('qId').value;
+  const s = DB.settings();
+
+  const data = {
+    clientId:    cid,
+    clientName:  client?.name || '',
+    clientEmail: email,
+    desc:   document.getElementById('qDesc').value.trim(),
+    notes:  document.getElementById('qNotes').value.trim(),
+    status: document.getElementById('qStatus').value,
+    lines:  JSON.parse(JSON.stringify(_lines)),
+  };
+
+  let quote;
+  if (existId) {
+    const idx = quotes.findIndex(q => q.id === existId);
+    quote = { ...quotes[idx], ...data };
+    quotes[idx] = quote;
+  } else {
+    const num = s.nextQ || 1;
+    quote = { id: uid(), number: 'D-' + String(num).padStart(4, '0'), createdAt: today(), ...data };
+    quotes.push(quote);
+    s.nextQ = num + 1;
+    DB.saveSettings(s);
+  }
+  DB.saveQuotes(quotes);
+  closeModal('modalQuote');
+  toast('Devis enregistré', 'success');
+  renderQuotes();
+
+  if (!draftOnly) generatePDF(quote, 'quote');
+  return quote;
+}
+
+function setQuoteFilter(val, btn) {
+  _qFilter = val;
+  document.querySelectorAll('#statusFilters .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderQuotes();
+}
+
+function switchTab(tab) {
+  _activeTab = tab;
+  document.getElementById('tabQuotes').classList.toggle('active', tab === 'quotes');
+  document.getElementById('tabInvoices').classList.toggle('active', tab === 'invoices');
+  document.getElementById('panelQuotes').style.display   = tab === 'quotes'   ? '' : 'none';
+  document.getElementById('panelInvoices').style.display = tab === 'invoices' ? '' : 'none';
+  document.getElementById('statusFilters').style.display = tab === 'quotes'   ? '' : 'none';
+  if (tab === 'invoices') renderInvoices();
+  else renderQuotes();
+}
+
+const QUOTE_LABELS = { draft: 'Brouillon', sent: 'Envoyé', accepted: 'Accepté', refused: 'Refusé' };
+const QUOTE_BADGE  = { draft: 'badge-draft', sent: 'badge-sent', accepted: 'badge-accepted', refused: 'badge-refused' };
+function quoteBadge(s) { return `<span class="badge ${QUOTE_BADGE[s] || 'badge-draft'}">${QUOTE_LABELS[s] || s}</span>`; }
+
+function renderQuotes() {
+  const all = DB.quotes();
+  const data = _qFilter === 'all' ? all : all.filter(q => q.status === _qFilter);
+  const tb = document.getElementById('tbQuotes');
+  if (!data.length) {
+    tb.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--gray-600)">
+      Aucun devis${_qFilter !== 'all' ? ' pour ce filtre' : ''}. Créez votre premier devis !
+    </td></tr>`;
+    return;
+  }
+  tb.innerHTML = data.map(q => {
+    const canConvert = q.status === 'accepted' && !q.convertedTo;
+    return `<tr>
+      <td><strong style="color:var(--accent)">${q.number}</strong></td>
+      <td>${q.clientName || q.clientEmail || '—'}</td>
+      <td>${fmtDate(q.createdAt)}</td>
+      <td><strong>${fmtMoney(calcTTC(q.lines))}</strong></td>
+      <td>${quoteBadge(q.status)}</td>
+      <td><div style="display:flex;gap:4px;flex-wrap:wrap">
+        <button class="btn btn-secondary btn-sm" onclick="openQuoteModal('${q.id}')">Modifier</button>
+        <button class="btn btn-secondary btn-sm" onclick='generatePDF(DB.quotes().find(x=>x.id==="${q.id}"),"quote")'>PDF</button>
+        ${canConvert ? `<button class="btn btn-success btn-sm" onclick="openConvert('${q.id}')">→ Facture</button>` : ''}
+        ${q.convertedTo ? `<span class="badge badge-invoiced" style="font-size:10px">Converti</span>` : ''}
+        <button class="btn-icon" onclick="delQuote('${q.id}')" title="Supprimer">🗑️</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+function delQuote(id) {
+  if (!confirm('Supprimer ce devis ?')) return;
+  DB.saveQuotes(DB.quotes().filter(q => q.id !== id));
+  toast('Devis supprimé');
+  renderQuotes();
+}
+
+// ═══════════════════════════════════════════
+// INVOICES
+// ═══════════════════════════════════════════
+function openConvert(quoteId) {
+  document.getElementById('convertQuoteId').value = quoteId;
+  const t = today();
+  document.getElementById('invDate').value = t;
+  document.getElementById('invDue').value  = addDays(t, 30);
+  openModal('modalConvert');
+}
+
+function doConvert() {
+  const qid   = document.getElementById('convertQuoteId').value;
+  const q     = DB.quotes().find(x => x.id === qid);
+  if (!q) return;
+  const invs  = DB.invoices();
+  const s     = DB.settings();
+  const num   = s.nextF || 1;
+  const inv   = {
+    id: uid(), number: 'F-' + String(num).padStart(4, '0'),
+    quoteId: qid, clientId: q.clientId,
+    clientName: q.clientName, clientEmail: q.clientEmail,
+    desc: q.desc, notes: q.notes,
+    lines: JSON.parse(JSON.stringify(q.lines)),
+    createdAt: document.getElementById('invDate').value,
+    dueDate:   document.getElementById('invDue').value,
+    status: 'issued',
+  };
+  invs.push(inv);
+  DB.saveInvoices(invs);
+
+  const quotes = DB.quotes();
+  quotes[quotes.findIndex(x => x.id === qid)].convertedTo = inv.id;
+  DB.saveQuotes(quotes);
+
+  s.nextF = num + 1;
+  DB.saveSettings(s);
+  closeModal('modalConvert');
+  toast('Facture créée', 'success');
+  generatePDF(inv, 'invoice');
+  renderQuotes();
+}
+
+function invBadge(inv) {
+  const now = new Date();
+  const ov  = inv.status === 'issued' && inv.dueDate && new Date(inv.dueDate) < now;
+  const st  = ov ? 'overdue' : inv.status;
+  const lbl = { issued: 'Émise', paid: 'Payée', overdue: 'En retard' };
+  const cls = { issued: 'badge-issued', paid: 'badge-paid', overdue: 'badge-overdue' };
+  return `<span class="badge ${cls[st] || 'badge-draft'}">${lbl[st] || st}</span>`;
+}
+
+function renderInvoices() {
+  const invs = DB.invoices();
+  const tb   = document.getElementById('tbInvoices');
+  const now  = new Date();
+  if (!invs.length) {
+    tb.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--gray-600)">
+      Aucune facture. Acceptez un devis et convertissez-le.
+    </td></tr>`;
+    return;
+  }
+  tb.innerHTML = invs.map(inv => {
+    const ov = inv.status === 'issued' && inv.dueDate && new Date(inv.dueDate) < now;
+    return `<tr>
+      <td><strong style="color:var(--accent)">${inv.number}</strong></td>
+      <td>${inv.clientName || '—'}</td>
+      <td>${fmtDate(inv.createdAt)}</td>
+      <td style="${ov ? 'color:var(--danger);font-weight:700' : ''}">${fmtDate(inv.dueDate)}</td>
+      <td><strong>${fmtMoney(calcTTC(inv.lines))}</strong></td>
+      <td>${invBadge(inv)}</td>
+      <td><div style="display:flex;gap:4px;flex-wrap:wrap">
+        <button class="btn btn-secondary btn-sm" onclick='generatePDF(DB.invoices().find(x=>x.id==="${inv.id}"),"invoice")'>PDF</button>
+        ${inv.status !== 'paid' ? `
+          <button class="btn btn-success btn-sm" onclick="markPaid('${inv.id}')">Payée ✓</button>
+          <button class="btn btn-secondary btn-sm" onclick="sendReminder('${inv.id}')">Relancer</button>
+        ` : ''}
+        <button class="btn-icon" onclick="delInvoice('${inv.id}')" title="Supprimer">🗑️</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+function markPaid(id) {
+  const invs = DB.invoices();
+  const idx  = invs.findIndex(i => i.id === id);
+  if (idx < 0) return;
+  invs[idx].status = 'paid';
+  invs[idx].paidAt = today();
+  DB.saveInvoices(invs);
+  toast('Facture marquée payée ✓', 'success');
+  renderInvoices();
+  if (activeSec === 'tresorerie') renderTreasury();
+}
+
+function delInvoice(id) {
+  if (!confirm('Supprimer cette facture ?')) return;
+  DB.saveInvoices(DB.invoices().filter(i => i.id !== id));
+  toast('Facture supprimée');
+  renderInvoices();
+}
+
+function sendReminder(id) {
+  const inv = DB.invoices().find(i => i.id === id);
+  if (!inv) return;
+  const s = DB.settings();
+  const subj = encodeURIComponent(`Relance – Facture ${inv.number}`);
+  const body = encodeURIComponent(
+    `Bonjour,\n\nJe me permets de vous relancer au sujet de la facture ${inv.number} du ${fmtDate(inv.createdAt)} d'un montant de ${fmtMoney(calcTTC(inv.lines))}.\n\nÀ ce jour, cette facture (échéance : ${fmtDate(inv.dueDate)}) reste impayée. Je vous serais reconnaissante de bien vouloir procéder au règlement dans les meilleurs délais.\n\nN'hésitez pas à me contacter en cas de question.\n\nCordialement,\n${s.name || 'Votre nom'}`
+  );
+  window.location.href = `mailto:${inv.clientEmail || ''}?subject=${subj}&body=${body}`;
+}
+
+// ═══════════════════════════════════════════
+// PROJECTS
+// ═══════════════════════════════════════════
+let _projFilter = 'all';
+
+function openProjectModal(id = null) {
+  refreshSelects();
+  ['pId','pName','pAmount','pDesc'].forEach(f => document.getElementById(f).value = '');
+  document.getElementById('pClient').value   = '';
+  document.getElementById('pStatus').value   = 'En attente';
+  document.getElementById('pStart').value    = today();
+  document.getElementById('pDeadline').value = '';
+  document.getElementById('projMTitle').textContent = id ? 'Modifier le projet' : 'Nouveau projet';
+
+  if (id) {
+    const p = DB.projects().find(x => x.id === id);
+    if (p) {
+      document.getElementById('pId').value       = p.id;
+      document.getElementById('pClient').value   = p.clientId || '';
+      document.getElementById('pName').value     = p.name     || '';
+      document.getElementById('pStatus').value   = p.status   || 'En attente';
+      document.getElementById('pAmount').value   = p.amountHT || '';
+      document.getElementById('pStart').value    = p.startDate || '';
+      document.getElementById('pDeadline').value = p.deadline || '';
+      document.getElementById('pDesc').value     = p.desc     || '';
+    }
+  }
+  openModal('modalProject');
+}
+
+function saveProject() {
+  const name = document.getElementById('pName').value.trim();
+  if (!name) { toast('Le nom du projet est obligatoire', 'error'); return; }
+  const cid    = document.getElementById('pClient').value;
+  const client = DB.clients().find(c => c.id === cid);
+  const list   = DB.projects();
+  const id     = document.getElementById('pId').value;
+  const obj    = {
+    id: id || uid(),
+    clientId:   cid,
+    clientName: client?.name || '',
+    name,
+    status:     document.getElementById('pStatus').value,
+    amountHT:   parseFloat(document.getElementById('pAmount').value) || 0,
+    startDate:  document.getElementById('pStart').value,
+    deadline:   document.getElementById('pDeadline').value,
+    desc:       document.getElementById('pDesc').value.trim(),
+    createdAt: id ? (list.find(p => p.id === id)?.createdAt || today()) : today(),
+  };
+  if (id) list[list.findIndex(p => p.id === id)] = obj;
+  else list.push(obj);
+  DB.saveProjects(list);
+  closeModal('modalProject');
+  toast('Projet enregistré', 'success');
+  renderProjects();
+}
+
+function delProject(id) {
+  if (!confirm('Supprimer ce projet ?')) return;
+  DB.saveProjects(DB.projects().filter(p => p.id !== id));
+  toast('Projet supprimé');
+  renderProjects();
+}
+
+function setProjFilter(val, btn) {
+  _projFilter = val;
+  document.querySelectorAll('#projFilterBar .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProjects();
+}
+
+const PROJ_STATUS = {
+  'En attente': 'badge-pending',
+  'En cours':   'badge-progress',
+  'Livré':      'badge-delivered',
+  'Facturé':    'badge-invoiced',
+  'Payé':       'badge-paid',
+};
+function projBadge(s) { return `<span class="badge ${PROJ_STATUS[s] || 'badge-draft'}">${s}</span>`; }
+
+function renderProjects() {
+  const list = DB.projects();
+  const data = _projFilter === 'all' ? list : list.filter(p => p.status === _projFilter);
+  const tb   = document.getElementById('tbProjects');
+  const now  = new Date();
+  if (!data.length) {
+    tb.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--gray-600)">
+      Aucun projet${_projFilter !== 'all' ? ' pour ce statut' : ''}. Créez votre premier projet !
+    </td></tr>`;
+    return;
+  }
+  tb.innerHTML = data.map(p => {
+    const soon = p.deadline && new Date(p.deadline + 'T23:59:59') < new Date(now.getTime() + 7 * 86400000)
+                 && !['Livré','Payé'].includes(p.status);
+    return `<tr>
+      <td>${p.clientName || '—'}</td>
+      <td><strong>${p.name}</strong></td>
+      <td>${projBadge(p.status)}</td>
+      <td>${fmtMoney(p.amountHT)}</td>
+      <td>${fmtDate(p.startDate)}</td>
+      <td style="${soon ? 'color:var(--danger);font-weight:700' : ''}">${fmtDate(p.deadline)}${soon ? ' ⚠️' : ''}</td>
+      <td><div style="display:flex;gap:4px">
+        <button class="btn btn-secondary btn-sm" onclick="openProjectModal('${p.id}')">Modifier</button>
+        <button class="btn-icon" onclick="delProject('${p.id}')" title="Supprimer">🗑️</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════
+// TREASURY
+// ═══════════════════════════════════════════
+let _chartRev = null, _chartSt = null;
+
+function renderTreasury() {
+  const sel  = document.getElementById('yearPicker');
+  const curY = new Date().getFullYear();
+  if (!sel.options.length) {
+    for (let y = curY - 2; y <= curY + 1; y++) {
+      const o = document.createElement('option');
+      o.value = y; o.textContent = y;
+      sel.appendChild(o);
+    }
+    sel.value = curY;
+  }
+  const year   = parseInt(sel.value);
+  const invs   = DB.invoices();
+  const yInvs  = invs.filter(i => new Date(i.createdAt).getFullYear() === year);
+  const now    = new Date();
+  const totF   = yInvs.reduce((s, i) => s + calcTTC(i.lines), 0);
+  const totP   = yInvs.filter(i => i.status === 'paid').reduce((s, i) => s + calcTTC(i.lines), 0);
+  const totA   = yInvs.filter(i => i.status !== 'paid').reduce((s, i) => s + calcTTC(i.lines), 0);
+  const ov     = invs.filter(i => i.status !== 'paid' && i.dueDate && new Date(i.dueDate) < now);
+  const totOv  = ov.reduce((s, i) => s + calcTTC(i.lines), 0);
+
+  document.getElementById('treasuryStats').innerHTML = `
+    <div class="stat-card">
+      <div class="stat-label">Facturé ${year}</div>
+      <div class="stat-value">${fmtMoney(totF)}</div>
+      <div class="stat-sub">${yInvs.length} facture${yInvs.length > 1 ? 's' : ''}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Encaissé ${year}</div>
+      <div class="stat-value" style="color:var(--success)">${fmtMoney(totP)}</div>
+      <div class="stat-sub">${yInvs.filter(i=>i.status==='paid').length} payée${yInvs.filter(i=>i.status==='paid').length>1?'s':''}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">En attente</div>
+      <div class="stat-value" style="color:var(--warning)">${fmtMoney(totA)}</div>
+      <div class="stat-sub">${yInvs.filter(i=>i.status!=='paid').length} impayée${yInvs.filter(i=>i.status!=='paid').length>1?'s':''}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">En retard</div>
+      <div class="stat-value" style="color:var(--danger)">${fmtMoney(totOv)}</div>
+      <div class="stat-sub">${ov.length} facture${ov.length>1?'s':''} en retard</div>
+    </div>`;
+
+  buildRevenueChart();
+  buildStatusChart(yInvs);
+
+  const unpaid = invs.filter(i => i.status !== 'paid').sort((a, b) => new Date(a.dueDate||0) - new Date(b.dueDate||0));
+  document.getElementById('unpaidBadge').textContent = unpaid.length
+    ? `${unpaid.length} impayée${unpaid.length > 1 ? 's' : ''}` : '';
+
+  const ul = document.getElementById('unpaidList');
+  if (!unpaid.length) {
+    ul.innerHTML = `<div style="text-align:center;padding:28px;color:var(--gray-600);font-size:13px">
+      🎉 Aucune facture impayée pour l'instant !
+    </div>`;
+    return;
+  }
+  ul.innerHTML = unpaid.map(inv => {
+    const isOv = inv.dueDate && new Date(inv.dueDate) < now;
+    return `<div class="unpaid-item ${isOv ? 'overdue' : ''}">
+      <div style="flex:1">
+        <div style="font-weight:700;font-size:13px">${inv.number} — ${inv.clientName || '—'}</div>
+        <div style="font-size:12px;color:${isOv ? 'var(--danger)' : 'var(--gray-600)'}">
+          ${isOv ? '⚠️ En retard · ' : ''}Échéance : ${fmtDate(inv.dueDate)}
+        </div>
+      </div>
+      <div style="font-size:16px;font-weight:800;white-space:nowrap">${fmtMoney(calcTTC(inv.lines))}</div>
+      <div style="display:flex;gap:6px;flex-shrink:0">
+        <button class="btn btn-success btn-sm" onclick="markPaid('${inv.id}');renderTreasury()">Payée ✓</button>
+        <button class="btn btn-secondary btn-sm" onclick="sendReminder('${inv.id}')">Relancer</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function buildRevenueChart() {
+  const invs = DB.invoices();
+  const now  = new Date();
+  const labels = [], billed = [], cashed = [];
+  for (let i = 5; i >= 0; i--) {
+    const d  = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const mo = invs.filter(inv => {
+      const dt = new Date(inv.createdAt);
+      return dt.getFullYear() === d.getFullYear() && dt.getMonth() === d.getMonth();
+    });
+    labels.push(MONTHS[d.getMonth()] + ' ' + String(d.getFullYear()).slice(2));
+    billed.push(mo.reduce((s, inv) => s + calcTTC(inv.lines), 0));
+    cashed.push(mo.filter(inv => inv.status === 'paid').reduce((s, inv) => s + calcTTC(inv.lines), 0));
+  }
+  const ctx = document.getElementById('chartRevenue').getContext('2d');
+  if (_chartRev) _chartRev.destroy();
+  _chartRev = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Facturé',  data: billed, backgroundColor: 'rgba(124,107,160,0.22)', borderColor: 'rgba(124,107,160,0.75)', borderWidth: 2, borderRadius: 5 },
+        { label: 'Encaissé', data: cashed, backgroundColor: 'rgba(74,155,111,0.75)',  borderColor: 'rgba(74,155,111,1)',     borderWidth: 2, borderRadius: 5 },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, padding: 14, boxWidth: 11 } } },
+      scales: {
+        y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { size: 11 }, callback: v => v >= 1000 ? (v/1000).toFixed(0) + 'k€' : v + '€' } },
+        x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+      }
+    }
+  });
+}
+
+function buildStatusChart(yInvs) {
+  const paid    = yInvs.filter(i => i.status === 'paid').reduce((s, i) => s + calcTTC(i.lines), 0);
+  const pending = yInvs.filter(i => i.status !== 'paid').reduce((s, i) => s + calcTTC(i.lines), 0);
+  const ctx = document.getElementById('chartStatus').getContext('2d');
+  if (_chartSt) _chartSt.destroy();
+  _chartSt = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: paid || pending ? ['Encaissé', 'En attente'] : ['Aucune donnée'],
+      datasets: [{
+        data: paid || pending ? [paid, pending] : [1],
+        backgroundColor: paid || pending ? ['rgba(74,155,111,0.8)', 'rgba(232,150,42,0.7)'] : ['#EFEFEF'],
+        borderColor:     paid || pending ? ['rgba(74,155,111,1)',   'rgba(232,150,42,1)']   : ['#EFEFEF'],
+        borderWidth: 2,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, cutout: '62%',
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 11 }, padding: 14, boxWidth: 11 } },
+        tooltip: { callbacks: { label: ctx => ' ' + fmtMoney(ctx.parsed) } }
+      }
+    }
+  });
+}
+
+// ═══════════════════════════════════════════
+// PDF GENERATION
+// ═══════════════════════════════════════════
+function generatePDF(doc, type) {
+  if (!doc) { toast('Document introuvable', 'error'); return; }
+  if (!window.jspdf) { toast('Librairie PDF non chargée', 'error'); return; }
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({ unit: 'mm', format: 'a4' });
+  const isInv = type === 'invoice';
+  const s = DB.settings();
+  const W = 210, H = 297, M = 18, CW = W - M * 2;
+  const AC = [124, 107, 160], GR = [107, 100, 120];
+
+  // Header band
+  pdf.setFillColor(...AC);
+  pdf.rect(0, 0, W, 38, 'F');
+  pdf.setTextColor(255, 255, 255);
+  pdf.setFont('helvetica', 'bold');
+  pdf.setFontSize(24);
+  pdf.text(isInv ? 'FACTURE' : 'DEVIS', M, 21);
+  pdf.setFontSize(10);
+  pdf.setFont('helvetica', 'normal');
+  pdf.text(doc.number, W - M, 14, { align: 'right' });
+  pdf.text(`Date : ${fmtDate(doc.createdAt)}`, W - M, 21, { align: 'right' });
+  if (isInv && doc.dueDate) pdf.text(`Échéance : ${fmtDate(doc.dueDate)}`, W - M, 28, { align: 'right' });
+
+  let y = 50;
+  // Freelancer block
+  pdf.setTextColor(28, 24, 38);
+  pdf.setFont('helvetica', 'bold'); pdf.setFontSize(11);
+  pdf.text(s.name || 'Votre Nom', M, y); y += 5;
+  pdf.setFont('helvetica', 'normal'); pdf.setFontSize(9);
+  pdf.setTextColor(...GR);
+  if (s.address) { pdf.text(s.address, M, y); y += 4.5; }
+  if (s.email)   { pdf.text(s.email, M, y);   y += 4.5; }
+  if (s.phone)   { pdf.text(s.phone, M, y);   y += 4.5; }
+  if (s.siret)   { pdf.text('SIRET : ' + s.siret, M, y); y += 4.5; }
+
+  // Client block
+  let cy = 50;
+  const RX = W / 2 + 8;
+  pdf.setFontSize(8); pdf.setFont('helvetica', 'bold');
+  pdf.setTextColor(...AC);
+  pdf.text('FACTURER À', RX, cy); cy += 5;
+  pdf.setTextColor(28, 24, 38);
+  pdf.setFontSize(11); pdf.setFont('helvetica', 'bold');
+  pdf.text(doc.clientName || '—', RX, cy); cy += 5;
+  pdf.setFontSize(9); pdf.setFont('helvetica', 'normal');
+  pdf.setTextColor(...GR);
+  if (doc.clientEmail) { pdf.text(doc.clientEmail, RX, cy); cy += 4.5; }
+
+  y = Math.max(y, cy) + 9;
+
+  // Object bar
+  pdf.setFillColor(242, 240, 248);
+  pdf.rect(M, y - 3.5, CW, 9, 'F');
+  pdf.setFontSize(9); pdf.setFont('helvetica', 'bold');
+  pdf.setTextColor(28, 24, 38);
+  pdf.text('Objet :', M + 3, y + 2);
+  pdf.setFont('helvetica', 'normal');
+  pdf.text(doc.desc || '—', M + 22, y + 2);
+  y += 13;
+
+  // Table header
+  pdf.setFillColor(...AC);
+  pdf.rect(M, y, CW, 7.5, 'F');
+  pdf.setTextColor(255, 255, 255);
+  pdf.setFontSize(8); pdf.setFont('helvetica', 'bold');
+  pdf.text('Description', M + 3, y + 5);
+  pdf.text('Qté', M + 100, y + 5, { align: 'right' });
+  pdf.text('P.U. HT', M + 130, y + 5, { align: 'right' });
+  pdf.text('Total HT', M + CW - 2, y + 5, { align: 'right' });
+  y += 7.5;
+
+  // Lines
+  (doc.lines || []).forEach((l, i) => {
+    const lineTotal = (l.qty || 0) * (l.price || 0);
+    if (i % 2 === 0) { pdf.setFillColor(248, 247, 252); pdf.rect(M, y, CW, 7, 'F'); }
+    pdf.setTextColor(28, 24, 38);
+    pdf.setFont('helvetica', 'normal'); pdf.setFontSize(9);
+    const wrapped = pdf.splitTextToSize(l.desc || '—', 88);
+    pdf.text(wrapped[0], M + 3, y + 4.5);
+    pdf.text(String(l.qty || 0), M + 100, y + 4.5, { align: 'right' });
+    pdf.text(fmtMoney(l.price || 0), M + 130, y + 4.5, { align: 'right' });
+    pdf.text(fmtMoney(lineTotal), M + CW - 2, y + 4.5, { align: 'right' });
+    y += 7;
+  });
+
+  y += 5;
+  // Totals
+  const ht  = calcHT(doc.lines || []);
+  const tva = ht * 0.2;
+  const ttc = ht + tva;
+  const TX  = M + CW - 72;
+  pdf.setDrawColor(220, 215, 240);
+  pdf.line(TX - 4, y, M + CW, y); y += 5;
+  pdf.setFontSize(9); pdf.setFont('helvetica', 'normal');
+  pdf.setTextColor(...GR);
+  pdf.text('Total HT',    TX, y); pdf.text(fmtMoney(ht),  M + CW - 2, y, { align: 'right' }); y += 5;
+  pdf.text('TVA (20 %)',  TX, y); pdf.text(fmtMoney(tva), M + CW - 2, y, { align: 'right' }); y += 3;
+  pdf.line(TX - 4, y, M + CW, y); y += 4;
+  pdf.setFillColor(...AC);
+  pdf.rect(TX - 5, y - 3, 79, 9.5, 'F');
+  pdf.setFontSize(10.5); pdf.setFont('helvetica', 'bold');
+  pdf.setTextColor(255, 255, 255);
+  pdf.text('Total TTC', TX, y + 3.5);
+  pdf.text(fmtMoney(ttc), M + CW - 2, y + 3.5, { align: 'right' });
+  y += 13;
+
+  // Notes
+  if (doc.notes) {
+    pdf.setFontSize(9); pdf.setFont('helvetica', 'bold');
+    pdf.setTextColor(28, 24, 38);
+    pdf.text('Notes :', M, y); y += 5;
+    pdf.setFont('helvetica', 'normal'); pdf.setTextColor(...GR);
+    const nl = pdf.splitTextToSize(doc.notes, CW);
+    pdf.text(nl, M, y); y += nl.length * 4.5 + 4;
+  }
+
+  // Payment conditions
+  pdf.setFontSize(8.5); pdf.setFont('helvetica', 'normal');
+  pdf.setTextColor(...GR);
+  pdf.text('Conditions de paiement : 30 jours nets à réception de facture.', M, y); y += 4;
+  pdf.text('Règlement par virement bancaire.', M, y);
+
+  // Footer
+  pdf.setFillColor(242, 240, 248);
+  pdf.rect(0, H - 17, W, 17, 'F');
+  pdf.setFontSize(8); pdf.setTextColor(...GR);
+  pdf.text([
+    (s.name || '') + (s.siret ? '  ·  SIRET : ' + s.siret : ''),
+    s.address || '',
+  ].filter(Boolean).join('   ·   '), W / 2, H - 8, { align: 'center' });
+
+  pdf.save(`${isInv ? 'Facture' : 'Devis'}_${doc.number}.pdf`);
+  toast(`PDF ${isInv ? 'facture' : 'devis'} généré`, 'success');
+}
+
+// ═══════════════════════════════════════════
+// INIT + DEMO DATA
+// ═══════════════════════════════════════════
+function seedDemoData() {
+  if (DB.clients().length) return;
+
+  const c1 = uid(), c2 = uid(), c3 = uid();
+  DB.saveClients([
+    { id: c1, name: 'Sophie Martin', company: 'Bloom Agency', email: 'sophie@bloomagency.fr', phone: '06 12 34 56 78', address: '24 rue Réaumur, 75003 Paris', notes: 'Préfère les échanges par email. Budget annuel ~8k€.', createdAt: '2025-01-10' },
+    { id: c2, name: 'Thomas Leroy', company: 'Leroy Traiteur', email: 'thomas@leroytraiteur.fr', phone: '06 98 76 54 32', address: '5 avenue des Gobelins, 75013 Paris', notes: '', createdAt: '2025-02-03' },
+    { id: c3, name: 'Anaïs Dubois', company: '', email: 'anais.dubois@gmail.com', phone: '', address: '', notes: 'Particulier, projet personnel.', createdAt: '2025-03-15' },
+  ]);
+
+  const q1 = uid(), q2 = uid(), q3 = uid();
+  const f1 = uid(), f2 = uid();
+  DB.saveQuotes([
+    { id: q1, number: 'D-0001', createdAt: '2025-03-01', clientId: c1, clientName: 'Sophie Martin', clientEmail: 'sophie@bloomagency.fr', desc: 'Identité visuelle complète', notes: 'Acompte 30 % à la commande', status: 'accepted', convertedTo: f1, lines: [{ id: uid(), desc: 'Création logo + charte graphique', qty: 3, price: 380 }, { id: uid(), desc: 'Déclinaisons carte de visite & en-tête', qty: 1, price: 280 }] },
+    { id: q2, number: 'D-0002', createdAt: '2025-04-10', clientId: c2, clientName: 'Thomas Leroy', clientEmail: 'thomas@leroytraiteur.fr', desc: 'Refonte carte menu printemps', notes: '', status: 'sent', lines: [{ id: uid(), desc: 'Conception carte menu A4 recto/verso', qty: 2, price: 380 }, { id: uid(), desc: 'Préparation fichiers impression', qty: 0.5, price: 380 }] },
+    { id: q3, number: 'D-0003', createdAt: '2025-04-28', clientId: c3, clientName: 'Anaïs Dubois', clientEmail: 'anais.dubois@gmail.com', desc: 'Illustrations pour livre jeunesse', notes: 'Livraison en 6 semaines', status: 'draft', lines: [{ id: uid(), desc: 'Illustrations couleur (x10)', qty: 10, price: 120 }] },
+  ]);
+
+  DB.saveInvoices([
+    { id: f1, number: 'F-0001', quoteId: q1, clientId: c1, clientName: 'Sophie Martin', clientEmail: 'sophie@bloomagency.fr', desc: 'Identité visuelle complète', notes: 'Acompte 30 % à la commande', lines: [{ id: uid(), desc: 'Création logo + charte graphique', qty: 3, price: 380 }, { id: uid(), desc: 'Déclinaisons carte de visite & en-tête', qty: 1, price: 280 }], createdAt: '2025-03-05', dueDate: '2025-04-04', status: 'paid', paidAt: '2025-03-28' },
+    { id: f2, number: 'F-0002', clientId: c2, clientName: 'Thomas Leroy', clientEmail: 'thomas@leroytraiteur.fr', desc: 'Création flyer événement', notes: '', lines: [{ id: uid(), desc: 'Design flyer A5 recto/verso', qty: 1.5, price: 380 }], createdAt: '2025-04-01', dueDate: '2025-05-01', status: 'issued' },
+  ]);
+
+  DB.saveProjects([
+    { id: uid(), clientId: c1, clientName: 'Sophie Martin', name: 'Identité visuelle Bloom', status: 'Payé',      amountHT: 1420, startDate: '2025-03-01', deadline: '2025-04-15', desc: 'Logo, charte, papeterie' },
+    { id: uid(), clientId: c2, clientName: 'Thomas Leroy',  name: 'Carte menu printemps',   status: 'En cours',  amountHT: 950,  startDate: '2025-04-10', deadline: '2025-05-20', desc: 'Refonte complète de la carte' },
+    { id: uid(), clientId: c3, clientName: 'Anaïs Dubois',  name: 'Illustrations livre',    status: 'En attente',amountHT: 1200, startDate: '2025-05-05', deadline: '2025-06-30', desc: '10 illustrations couleur' },
+    { id: uid(), clientId: c2, clientName: 'Thomas Leroy',  name: 'Flyer soirée estivale',  status: 'Facturé',   amountHT: 570,  startDate: '2025-03-20', deadline: '2025-04-10', desc: '' },
+  ]);
+
+  const s = DB.settings();
+  s.nextQ = 4; s.nextF = 3;
+  DB.saveSettings(s);
+}
+
+function init() {
+  seedDemoData();
+  refreshSelects();
+  renderQuotes();
+}
+
+init();
+</script>
+</body>
+</html>
